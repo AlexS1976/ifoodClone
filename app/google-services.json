@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "342699657051",
+    "project_id": "ifoodclone-d9326",
+    "storage_bucket": "ifoodclone-d9326.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342699657051:android:6f137bc308510eeaa7bc7e",
+        "android_client_info": {
+          "package_name": "com.example.ifood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342699657051-no12raloae4pnpacfqkj1k5l8bauagik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP3LqbZgWnH5gc_f7gFkhRjmPKTqWMup4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342699657051-no12raloae4pnpacfqkj1k5l8bauagik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
