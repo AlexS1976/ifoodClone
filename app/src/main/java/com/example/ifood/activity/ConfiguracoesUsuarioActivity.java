@@ -7,17 +7,18 @@ import android.os.Bundle;
 
 import com.example.ifood.R;
 
-public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
+public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuracoes_empresa);
+        setContentView(R.layout.activity_configuracoes_usuario);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Configurações");
+        toolbar.setTitle("Configuraçoes Usuario");
         setSupportActionBar(toolbar);
-        //cria o botao voltar na toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
     }
 }

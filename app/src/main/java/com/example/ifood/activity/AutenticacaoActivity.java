@@ -182,43 +182,5 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
-            case R.id.sair :
-                deslogarUsuario();
-                break;
-            case R.id.config:
-                abrirConfiguracoes();
-                break;
-            case R.id.ItemAdicionar:
-                abrirNovoProduto();
-                break;
-
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void deslogarUsuario() {
-
-        try {
-            autenticacao.signOut();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void abrirConfiguracoes(){
-        Intent intent = new Intent(AutenticacaoActivity.this, ConfiguracoesEmpresaActivity.class);
-        startActivity(intent);
-    }
-
-    public void abrirNovoProduto() {
-        Intent intent = new Intent(AutenticacaoActivity.this, NovoProdutoEmpresaActivity.class);
-        startActivity(intent);
-    }
 }
