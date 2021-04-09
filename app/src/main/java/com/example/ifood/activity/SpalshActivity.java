@@ -14,7 +14,6 @@ public class SpalshActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
 
         //metodo para criar o splash
         new Handler().postDelayed(new Runnable() {

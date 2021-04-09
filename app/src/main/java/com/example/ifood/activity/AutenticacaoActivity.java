@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -38,7 +39,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autenticacao);
-        getSupportActionBar().hide();
+
 
         camporEmail = findViewById(R.id.editCadastroEmail);
         campoSenha = findViewById(R.id.editCadastroSenha);
@@ -49,7 +50,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        autenticacao.signOut();
+        //autenticacao.signOut();
 
         verificarUsuarioLogado();
 
@@ -179,5 +180,45 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.sair :
+                deslogarUsuario();
+                break;
+            case R.id.config:
+                abrirConfiguracoes();
+                break;
+            case R.id.ItemAdicionar:
+                abrirNovoProduto();
+                break;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void deslogarUsuario() {
+
+        try {
+            autenticacao.signOut();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void abrirConfiguracoes(){
+        Intent intent = new Intent(AutenticacaoActivity.this, ConfiguracoesEmpresaActivity.class);
+        startActivity(intent);
+    }
+
+    public void abrirNovoProduto() {
+        Intent intent = new Intent(AutenticacaoActivity.this, NovoProdutoEmpresaActivity.class);
+        startActivity(intent);
     }
 }
