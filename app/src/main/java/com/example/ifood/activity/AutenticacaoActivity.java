@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -44,7 +43,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
         camporEmail = findViewById(R.id.editCadastroEmail);
         campoSenha = findViewById(R.id.editCadastroSenha);
         tipoAcesso = findViewById(R.id.switchAcesso);
-        botaoAcessar = findViewById(R.id.buttonAcessar);
+        botaoAcessar = findViewById(R.id.buttonEmpresaSalvar);
         tipoUsuario = findViewById(R.id.switchEmpresa);
         linearTipoUsuario = findViewById(R.id.linearTipoUsuario);
 
@@ -86,7 +85,10 @@ public class AutenticacaoActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(AutenticacaoActivity.this, "cadastro realizado com sucesso", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AutenticacaoActivity.this,
+                                                        "cadastro realizado com sucesso",
+                                                        Toast.LENGTH_SHORT).show();
+                                                
                                                 String tipoUsuario = getTipoUsuario();
                                                 UsuarioFirebase.AtualizarTipoUsuario(tipoUsuario);
                                                 abrirTelaprincipal(tipoUsuario);
