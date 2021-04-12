@@ -24,7 +24,7 @@
          />
 
     <EditText
-        android:id="@+id/editTextNomeEmpresa"
+        android:id="@+id/editTextNomeProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -32,7 +32,7 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editTextTipoEmpresa"
+        android:id="@+id/editTextDescricaoProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -40,7 +40,7 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editTextTempoEmpresa"
+        android:id="@+id/editTextValorProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Valor Entrega"
-        android:inputType="textPersonName" />
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/buttonEmpresaSalvar"

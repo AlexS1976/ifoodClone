@@ -23,8 +23,6 @@ public class Empresa {
                 .child(getIdUsuario());
         empresaRef.setValue(this);
 
-
-
     }
 
     public String getIdUsuario() {

@@ -13,10 +13,46 @@
         android:layout_height="wrap_content"
          />
 
-    <TextView
-        android:id="@+id/textView3"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="empresa" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextNomeProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Nome "
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextDescricaoProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Descrição"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextValorProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Valor"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/buttonEmpresaSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="validarDadosProduto"
+            android:text="salvar"
+            android:theme="@style/botaoPadrao" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

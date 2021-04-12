@@ -20,14 +20,19 @@ import com.example.ifood.R;
 import com.example.ifood.helper.ConfiguracaoFirebase;
 import com.example.ifood.helper.UsuarioFirebase;
 import com.example.ifood.model.Empresa;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
@@ -41,6 +46,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private String idUsuarioLogado;
     private String urlImagemSelecionada="";
+    private DatabaseReference firebaseref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         inicializarComponentes();
         storageReference = ConfiguracaoFirebase.getFirebaseStorage();
         idUsuarioLogado = UsuarioFirebase.getIdUsuario();
+        firebaseref = ConfiguracaoFirebase.getFirebase();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -67,6 +74,44 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                 if (i.resolveActivity(getPackageManager()) !=null){
                     startActivityForResult(i, SELECAO_GALERIA);
                 }
+            }
+        });
+
+
+recuperarDadosEmpresa();
+
+    }
+
+    public void recuperarDadosEmpresa(){
+
+        DatabaseReference empresaRef = firebaseref
+                .child("empresas")
+                .child(idUsuarioLogado);
+        empresaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getValue() != null){
+                    Empresa empresa = snapshot.getValue(Empresa.class);
+                    nomeEmpresa.setText(empresa.getNomeEmpresa());
+                    tipoCozinha.setText(empresa.getTipoComida());
+                    tempoEntrega.setText(empresa.getTempo());
+                    taxaEntrega.setText(empresa.getPrecoEntrega().toString());
+
+                    urlImagemSelecionada = empresa.getUrlImagem();
+                   // Log.i("teste", String.valueOf(nomeEmpresa));
+
+//
+                    if (urlImagemSelecionada != null){
+                    Picasso.get().load(urlImagemSelecionada).into(imagemPerfil);
+                   }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -123,23 +168,27 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             Bitmap imagem = null;
 
             try {
 
-                switch (requestCode){
+                switch (requestCode) {
                     case SELECAO_GALERIA:
 
                         Uri localImagem = data.getData();
-                        imagem = MediaStore.Images
-                                .Media
-                                .getBitmap(getContentResolver(), localImagem);
+                        try {
+                            imagem = MediaStore.Images
+                                    .Media
+                                    .getBitmap(getContentResolver(), localImagem);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         break;
 
                 }
 
-                if(imagem != null){
+                if (imagem != null) {
                     imagemPerfil.setImageBitmap(imagem);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
@@ -150,7 +199,27 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                             .child("empresas")
                             .child(idUsuarioLogado + "jpeg");
                     UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            return imagemRef.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUrl = task.getResult();
+                                urlImagemSelecionada = downloadUrl.toString();
+                                Toast.makeText(ConfiguracoesEmpresaActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ConfiguracoesEmpresaActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    /*uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(ConfiguracoesEmpresaActivity.this,
@@ -168,26 +237,26 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                                             "Sucesso ao carregar imagem",
                                             Toast.LENGTH_SHORT).show();
                                 }
-                            });
-
-                        }
-                    });
-
+                            });*/
 
                 }
 
+
             }catch (Exception e){
                 e.printStackTrace();
+        }
+
+
             }
         }
-    }
+
 
     public void inicializarComponentes(){
 
         imagemPerfil = findViewById(R.id.imagePerfilEmpresa);
-      nomeEmpresa = findViewById(R.id.editTextNomeEmpresa);
-      tipoCozinha = findViewById(R.id.editTextTipoEmpresa);
-      tempoEntrega = findViewById(R.id.editTextTempoEmpresa);
+      nomeEmpresa = findViewById(R.id.editTextNomeProduto);
+      tipoCozinha = findViewById(R.id.editTextDescricaoProduto);
+      tempoEntrega = findViewById(R.id.editTextValorProduto);
       taxaEntrega = findViewById(R.id.editTextEntregaEmpresa);
       botaoSalvar = findViewById(R.id.buttonEmpresaSalvar);
 
