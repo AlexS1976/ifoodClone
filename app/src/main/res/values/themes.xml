@@ -20,8 +20,8 @@
     </style>
 
     <style name="botaoPadrao" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">#a50a15</item>
-        <item name="colorButtonNormal">#870912</item>
+        <item name="colorControlHighlight">@color/botaoAcionado</item>
+        <item name="colorButtonNormal">@color/botao</item>
         <item name="android:textColor">@color/white</item>
 
     </style>
