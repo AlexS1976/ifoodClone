@@ -7,10 +7,65 @@
     android:orientation="vertical"
     tools:context=".activity.ConfiguracoesUsuarioActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".activity.ConfiguracoesUsuarioActivity">
+
+        <include
+            layout="@layout/tollbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imagePerfilEmpresa3"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/perfil" />
+
+        <EditText
+            android:id="@+id/editTextNomeUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Nome"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextEnderecoUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Endereço"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextNumeroEntrega"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Número"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/buttonEmpresaSalvar3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+
+            android:onClick="validarDadosUsuario"
+            android:text="salvar"
+            android:theme="@style/botaoPadrao" />
+
+    </LinearLayout>
+
     <include
         layout="@layout/tollbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
