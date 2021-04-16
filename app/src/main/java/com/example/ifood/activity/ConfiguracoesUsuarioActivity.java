@@ -133,8 +133,6 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
     public void exibirmensagem(String texto){
         Toast.makeText(this, texto,Toast.LENGTH_LONG).show();
