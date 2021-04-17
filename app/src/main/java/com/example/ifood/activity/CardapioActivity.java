@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ifood.R;
 import com.example.ifood.adapter.AdapterProduto;
@@ -35,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +46,11 @@ public class CardapioActivity extends AppCompatActivity {
     private TextView textNomeEmpresaCardapio;
     private Empresa empresaSelecionada;
     private AlertDialog dialog;
+    private int qtdeCarrinho;
+    private Double totalCarrinho;
+    private TextView textCarrionhoQtd;
+    private TextView texCarrinhoTotal;
+    private int metodoPagamento;
 
     private AdapterProduto adapterProduto;
     private List<Produto> produtos = new ArrayList<>();
@@ -125,6 +130,9 @@ public class CardapioActivity extends AppCompatActivity {
         recyclerProdutosCardapio = findViewById(R.id.recyclerEmpresaCardapio);
         imagemEmpresaCardapio = findViewById(R.id.imageEmpresaCardapio);
         textNomeEmpresaCardapio = findViewById(R.id.textNomeEmpresaCardapio);
+        textCarrionhoQtd = findViewById(R.id.textViewCarrinhoQuantidade);
+        texCarrinhoTotal = findViewById(R.id.textViewCarrinhoValor);
+
     }
 
     private void recuperarProdutos(){
@@ -155,6 +163,7 @@ public class CardapioActivity extends AppCompatActivity {
     public void recuperarDadosUsuario() {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
+                .setTheme(R.style.themeIfood)
                 .setMessage("Carregando dados")
                 .setCancelable(false)
                 .build();
@@ -201,19 +210,78 @@ public class CardapioActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.menuPedido :
-
+                confirmarPedido();
                  break;
 
 
         }
 
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public void confirmarPedido(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecione metodo de pagamento");
+        CharSequence[] itens = new CharSequence[]{
+             "Dinheiro", "Cartão"
+        };
+        builder.setSingleChoiceItems(itens, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+            }
+        })
+
+
     }
 
     public void recuperarPedido(){
 
-        dialog.dismiss();
+
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedido_usuario")
+                .child(idEmpresa)
+                .child(idUsuarioLogado);
+        pedidoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    qtdeCarrinho = 0;
+                    totalCarrinho = 0.0;
+                    itensCarrinho = new ArrayList<>();
+
+                if (snapshot.getValue() != null){
+                    pedidoRecuperado = snapshot.getValue(Pedido.class);
+
+                   itensCarrinho = pedidoRecuperado.getItens();
+
+                   for (ItemPedido itemPedido: itensCarrinho){
+
+                       int qtde = itemPedido.getQuantidade();
+                       Double preco = itemPedido.getPreco();
+
+                       totalCarrinho += (qtde * preco);
+                       qtdeCarrinho += (qtde);
+
+                   }
+
+                }
+
+                DecimalFormat df = new DecimalFormat("0.00");
+                textCarrionhoQtd.setText("Qtde " + qtdeCarrinho);
+                texCarrinhoTotal.setText("R$ " + df.format(totalCarrinho));
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
 
     }
 
