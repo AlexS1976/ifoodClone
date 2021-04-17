@@ -45,6 +45,27 @@ public class Pedido {
 
     }
 
+    public void remover(){
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedido_usuario")
+                .child(getIdEmpresa())
+                .child(getIdUsuario());
+        pedidoRef.removeValue();
+
+    }
+
+    public void confirmar(){
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedido_confirmado")
+                .child(getIdEmpresa())
+                .child(getIdPedido());
+        pedidoRef.setValue(this);
+
+    }
+
     public String getIdUsuario() {
         return idUsuario;
     }
