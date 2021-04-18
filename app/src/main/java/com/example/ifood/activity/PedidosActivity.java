@@ -8,12 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.ifood.R;
 import com.example.ifood.adapter.AdapterPedido;
 import com.example.ifood.adapter.AdapterProduto;
 import com.example.ifood.helper.ConfiguracaoFirebase;
 import com.example.ifood.helper.UsuarioFirebase;
+import com.example.ifood.listener.RecyclerItemClickListener;
 import com.example.ifood.model.Pedido;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,6 +64,34 @@ public class PedidosActivity extends AppCompatActivity {
 
         recuperarPedidos();
 
+        //evento de click RecyclerView
+
+        recyclerPedidos.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerPedidos, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+                Pedido pedido = pedidos.get(position);
+                pedido.setStatus("finalizado");
+                pedido.atualizarStatus();
+
+                adapterPedido.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        }
+        ));
+
+
     }
 
     private void recuperarPedidos(){
@@ -67,7 +99,7 @@ public class PedidosActivity extends AppCompatActivity {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setTheme(R.style.themeIfood)
-                .setMessage("Carregando dados")
+                .setMessage("Carregando dados....")
                 .setCancelable(false)
                 .build();
         dialog.show();
@@ -89,9 +121,11 @@ public class PedidosActivity extends AppCompatActivity {
                         pedidos.add(pedido);
 
                     }
+                    Toast.makeText(getApplicationContext(), "pedido enviado", Toast.LENGTH_SHORT).show();
                     adapterPedido.notifyDataSetChanged();
-                    dialog.dismiss();
+
                 }
+
             }
 
             @Override
@@ -99,7 +133,8 @@ public class PedidosActivity extends AppCompatActivity {
 
             }
         });
-
+        adapterPedido.notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     public void inicialiazarComponentes(){

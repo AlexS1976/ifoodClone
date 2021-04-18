@@ -3,6 +3,7 @@ package com.example.ifood.model;
 import com.example.ifood.helper.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Pedido {
@@ -43,6 +44,19 @@ public class Pedido {
                 .child(getIdUsuario());
         pedidoRef.setValue(this);
 
+    }
+
+    public void atualizarStatus(){
+
+        HashMap<String, Object> status = new HashMap<>();
+        status.put("status", getStatus());
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedido_confirmado")
+                .child(getIdEmpresa())
+                .child(getIdUsuario());
+        pedidoRef.updateChildren(status);
     }
 
     public void remover(){
