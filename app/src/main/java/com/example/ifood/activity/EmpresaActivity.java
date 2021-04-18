@@ -145,7 +145,9 @@ public class EmpresaActivity extends AppCompatActivity {
             case R.id.ItemAdicionar:
                 abrirNovoProduto();
                 break;
-
+            case R.id.menuPedidos:
+                abrirPedidos();
+                break;
         }
 
 
@@ -162,12 +164,17 @@ public class EmpresaActivity extends AppCompatActivity {
         }
     }
 
-    public void abrirConfiguracoes(){
+    private void abrirPedidos(){
+        Intent intent = new Intent(EmpresaActivity.this, PedidosActivity.class);
+        startActivity(intent);
+    }
+
+    private void abrirConfiguracoes(){
         Intent intent = new Intent(EmpresaActivity.this, ConfiguracoesEmpresaActivity.class);
         startActivity(intent);
     }
 
-    public void abrirNovoProduto() {
+    private void abrirNovoProduto() {
         Intent intent = new Intent(EmpresaActivity.this, NovoProdutoEmpresaActivity.class);
         startActivity(intent);
     }
